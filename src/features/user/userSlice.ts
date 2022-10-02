@@ -5,15 +5,18 @@ import {
   customFetch,
   getUserFromLocalStorage,
   addUserToLocalStorage,
+  removeUserFromLocalStorage,
 } from "../../utils";
 
 type InitiaState = {
   isLoading: boolean;
+  isSidebarOpen: boolean;
   user: MODEL__user | null;
 };
 
 const initialState: InitiaState = {
   isLoading: false,
+  isSidebarOpen: false,
   user: getUserFromLocalStorage(),
 };
 
@@ -45,7 +48,16 @@ export const loginUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
+    logoutUser: (state) => {
+      state.user = null;
+      state.isSidebarOpen = false;
+      removeUserFromLocalStorage();
+    },
+  },
   extraReducers: (builder) => {
     return (
       builder.addCase(registerUser.pending, (state) => {
@@ -83,4 +95,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { toggleSidebar, logoutUser } = userSlice.actions;
 export default userSlice.reducer;

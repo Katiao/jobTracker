@@ -4,12 +4,14 @@ import { toast } from "react-toastify";
 import { FormRow } from "../../components";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { MODEL__user } from "../../types";
+import { updateUser } from "../../features/user/userSlice";
+import { AppDispatch } from "../../store";
 
 export const Profile = () => {
   //TODO: fix type
   //@ts-ignore
   const { isLoading, user } = useSelector((store) => store.user);
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [userData, setUserData] = useState<Omit<MODEL__user, "token">>({
     name: user?.name || "",
@@ -26,6 +28,7 @@ export const Profile = () => {
       toast.error("Please Fill Out All Fields");
       return;
     }
+    dispatch(updateUser(userData));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

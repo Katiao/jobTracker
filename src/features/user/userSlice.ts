@@ -7,6 +7,7 @@ import {
   addUserToLocalStorage,
   removeUserFromLocalStorage,
 } from "../../utils";
+import { RootState } from "../../store";
 
 type InitiaState = {
   isLoading: boolean;
@@ -39,7 +40,6 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-//consider combining loginUser with register user function
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (user: MODEL__Member, thunkAPI) => {
@@ -51,6 +51,34 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
+type UpdateUserResponses = RequestResponse | any;
+
+export const updateUser: UpdateUserResponses = createAsyncThunk<
+  UpdateUserResponses,
+  MODEL__user,
+  {
+    // Optional fields for defining thunkApi field types
+    state: RootState;
+  }
+>("user/updateUser", async (user: MODEL__user, thunkAPI) => {
+  try {
+    const resp = await customFetch.patch<RequestResponse>(
+      "/auth/updateUser",
+      user,
+      {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user?.token}`,
+        },
+      }
+    );
+    return resp.data as RequestResponse;
+    //TODO : improve error type if possible
+  } catch (error: any) {
+    console.log(error.response);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -97,6 +125,20 @@ const userSlice = createSlice({
         state.isLoading = false;
         const { payload } = action;
         toast.error(payload as string);
+      }),
+      builder.addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      }),
+      builder.addCase(updateUser.fulfilled, (state, { payload: { user } }) => {
+        state.isLoading = false;
+        state.user = user;
+
+        addUserToLocalStorage(user);
+        toast.success("User Updated");
+      }),
+      builder.addCase(updateUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
       })
     );
   },

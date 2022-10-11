@@ -20,11 +20,18 @@ const initialState: InitiaState = {
   user: getUserFromLocalStorage(),
 };
 
+type RequestResponse = {
+  user: MODEL__user;
+};
+
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (user: MODEL__NonMember, thunkAPI) => {
     try {
-      const resp = await customFetch.post<InitiaState>("/auth/register", user);
+      const resp = await customFetch.post<RequestResponse>(
+        "/auth/register",
+        user
+      );
       return resp.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -37,7 +44,7 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (user: MODEL__Member, thunkAPI) => {
     try {
-      const resp = await customFetch.post<InitiaState>("/auth/login", user);
+      const resp = await customFetch.post<RequestResponse>("/auth/login", user);
       return resp.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -69,7 +76,7 @@ const userSlice = createSlice({
           state.isLoading = false;
           state.user = user;
           addUserToLocalStorage(user);
-          toast.success(`Hello There ${user?.name}`);
+          toast.success(`Hello There ${user.name}`);
         }
       ),
       builder.addCase(registerUser.rejected, (state, action) => {

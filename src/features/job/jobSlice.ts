@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { ValueOf } from "type-fest";
 import {
   MODEL_jobTypeOptions,
   MODEL_jobTypeOption,
@@ -35,10 +36,26 @@ const initialState: InitiaState = {
   editJobId: "",
 };
 
+type handleChangePayload = {
+  name: Partial<keyof InitiaState>;
+  //TODO: find out why I cannot change this type
+  value: never;
+};
+
 const jobSlice = createSlice({
   name: "job",
   initialState,
-  reducers: {},
+  reducers: {
+    handleChange: (
+      state: InitiaState,
+      action: PayloadAction<handleChangePayload>
+    ) => {
+      const {
+        payload: { name, value },
+      } = action;
+      state[name] = value;
+    },
+  },
 });
 
 export default jobSlice.reducer;

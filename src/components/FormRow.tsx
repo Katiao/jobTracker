@@ -22,6 +22,7 @@ export const FormRow = ({
       <input
         type={type}
         value={value}
+        id={name}
         name={name}
         onChange={handleChange}
         className="form-input"

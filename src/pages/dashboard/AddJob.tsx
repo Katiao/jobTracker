@@ -3,6 +3,7 @@ import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { AppDispatch } from "../../store";
+import { FormRowSelect } from "../../components";
 
 export const AddJob = () => {
   const {
@@ -29,7 +30,9 @@ export const AddJob = () => {
       return;
     }
   };
-  const handleJobInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleJobInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const name = e.target.name;
     const value = e.target.value;
     console.log(name, value);
@@ -64,8 +67,21 @@ export const AddJob = () => {
             handleChange={handleJobInput}
           />
           {/* job status */}
+          <FormRowSelect
+            name="status"
+            value={status}
+            handleChange={handleJobInput}
+            list={statusOptions}
+          />
 
           {/* job type */}
+          <FormRowSelect
+            name="jobType"
+            labelText="job type"
+            value={jobType}
+            handleChange={handleJobInput}
+            list={jobTypeOptions}
+          />
 
           {/* btn container */}
           <div className="btn-container">

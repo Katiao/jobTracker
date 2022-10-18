@@ -14,3 +14,13 @@ export type MODEL__user = {
   name: string;
   token: string;
 };
+
+export type MODEL_jobTypeOption =
+  | "full-time"
+  | "part-time"
+  | "remote"
+  | "internship";
+export type MODEL_jobTypeOptions = MODEL_jobTypeOption[];
+
+export type MODEL_statusOption = "interview" | "declined" | "pending";
+export type MODEL_statusOptions = MODEL_statusOption[];

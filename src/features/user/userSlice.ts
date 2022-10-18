@@ -25,6 +25,8 @@ type RequestResponse = {
   user: MODEL__user;
 };
 
+//TODO : refactor as it's getting long
+
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (user: MODEL__NonMember, thunkAPI) => {
@@ -75,6 +77,10 @@ export const updateUser: UpdateUserResponses = createAsyncThunk<
     return resp.data as RequestResponse;
     //TODO : improve error type if possible
   } catch (error: any) {
+    if (error.response.status === 401) {
+      thunkAPI.dispatch(logoutUser());
+      return thunkAPI.rejectWithValue("Unauthorized! Logging out..");
+    }
     console.log(error.response);
     return thunkAPI.rejectWithValue(error.response.data.msg);
   }

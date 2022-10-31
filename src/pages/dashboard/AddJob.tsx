@@ -5,6 +5,11 @@ import { toast } from "react-toastify";
 import { AppDispatch } from "../../store";
 import { FormRowSelect } from "../../components";
 import { RootState } from "../../store";
+import {
+  handleChange,
+  handleChangePayload,
+  clearValues,
+} from "../../features/job/jobSlice";
 
 export const AddJob = () => {
   const {
@@ -32,9 +37,9 @@ export const AddJob = () => {
   const handleJobInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    console.log(name, value);
+    const name = e.target.name as handleChangePayload["name"];
+    const value = e.target.value as handleChangePayload["value"];
+    dispatch(handleChange({ name, value }));
   };
 
   return (
@@ -87,7 +92,7 @@ export const AddJob = () => {
             <button
               type="button"
               className="btn btn-block clear-btn"
-              onClick={() => console.log("clear values")}
+              onClick={() => dispatch(clearValues())}
             >
               clear
             </button>

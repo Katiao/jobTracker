@@ -36,7 +36,7 @@ const initialState: InitiaState = {
   editJobId: "",
 };
 
-type handleChangePayload = {
+export type handleChangePayload = {
   name: Partial<keyof InitiaState>;
   //TODO: find out why I cannot change this type
   value: never;
@@ -55,7 +55,12 @@ const jobSlice = createSlice({
       } = action;
       state[name] = value;
     },
+    clearValues: () => {
+      return initialState;
+    },
   },
 });
+
+export const { handleChange, clearValues } = jobSlice.actions;
 
 export default jobSlice.reducer;

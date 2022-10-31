@@ -5,12 +5,10 @@ import { FormRow } from "../../components";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { MODEL__user } from "../../types";
 import { updateUser } from "../../features/user/userSlice";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 
 export const Profile = () => {
-  //TODO: fix type
-  //@ts-ignore
-  const { isLoading, user } = useSelector((store) => store.user);
+  const { isLoading, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch<AppDispatch>();
 
   const [userData, setUserData] = useState<Omit<MODEL__user, "token">>({

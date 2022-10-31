@@ -1,11 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
-//TODO: fix types
-//@ts-ignore
-export const ProtectedRoute = ({ children }) => {
-  //@ts-ignore
-  const { user } = useSelector((store) => store.user);
+export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { user } = useSelector((store: RootState) => store.user);
   if (!user) {
     return <Navigate to="/landing" />;
   }

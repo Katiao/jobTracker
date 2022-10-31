@@ -4,10 +4,10 @@ import { Logo } from "./Logo";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleSidebar } from "../features/user/userSlice";
 import { NavLinks } from "./Navlinks";
+import { RootState } from "../store";
 
 export const SmallSidebar = () => {
-  //@ts-ignore
-  const { isSidebarOpen } = useSelector((store) => store.user);
+  const { isSidebarOpen } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
   const toggle = () => {
     dispatch(toggleSidebar());

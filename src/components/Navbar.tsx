@@ -9,12 +9,11 @@ import {
 import Wrapper from "../assets/wrappers/Navbar";
 import { toggleSidebar, logoutUser } from "../features/user/userSlice";
 import { Logo } from "./Logo";
+import { RootState } from "../store";
 
 import { useDispatch, useSelector } from "react-redux";
 export const Navbar = () => {
-  //TODO: fix type
-  //@ts-ignore
-  const { user } = useSelector((store) => store.user);
+  const { user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
 
   const [showLogout, setShowLogout] = useState(false);

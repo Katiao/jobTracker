@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { AppDispatch } from "../../store";
 import { FormRowSelect } from "../../components";
+import { RootState } from "../../store";
 
 export const AddJob = () => {
   const {
@@ -17,9 +18,7 @@ export const AddJob = () => {
     statusOptions,
     isEditing,
     editJobId,
-    //TODO: fix type
-    //@ts-ignore
-  } = useSelector((store) => store.job);
+  } = useSelector((store: RootState) => store.job);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,24 +1,20 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { ValueOf } from "type-fest";
+// import { ValueOf } from "type-fest";
 import {
   MODEL_jobTypeOptions,
-  MODEL_jobTypeOption,
-  MODEL_statusOption,
   MODEL_statusOptions,
+  MODEL_job,
 } from "../../types";
+// import { useSelector } from "react-redux";
 import { customFetch } from "../../utils/axios";
-import { getUserFromLocalStorage } from "../../utils";
+// import { getUserFromLocalStorage } from "../../utils";
+import { logoutUser } from "../user/userSlice";
 
-type InitiaState = {
+type InitiaState = MODEL_job & {
   isLoading: boolean;
-  position: string;
-  company: string;
-  jobLocation: string;
   jobTypeOptions: MODEL_jobTypeOptions;
-  jobType: MODEL_jobTypeOption;
   statusOptions: MODEL_statusOptions;
-  status: MODEL_statusOption;
   isEditing: boolean;
   editJobId: string;
 };
@@ -42,6 +38,42 @@ export type handleChangePayload = {
   value: never;
 };
 
+type RequestResponse = {
+  job: MODEL_job;
+};
+
+type RequestPayload = {
+  job: MODEL_job;
+  token?: string;
+};
+
+export const createJob = createAsyncThunk<RequestResponse, RequestPayload>(
+  "job/createJob",
+  async (requestPayload, thunkAPI) => {
+    try {
+      const resp = await customFetch.post<RequestResponse>(
+        "/jobs",
+        requestPayload.job,
+        {
+          headers: {
+            authorization: `Bearer ${requestPayload.token}`,
+          },
+        }
+      );
+      thunkAPI.dispatch(clearValues());
+      return resp.data;
+    } catch (error: any) {
+      // logout user
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
+      }
+      // basic setup
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const jobSlice = createSlice({
   name: "job",
   initialState,
@@ -58,6 +90,22 @@ const jobSlice = createSlice({
     clearValues: () => {
       return initialState;
     },
+  },
+  extraReducers: (builder) => {
+    return (
+      builder.addCase(createJob.pending, (state) => {
+        state.isLoading = true;
+      }),
+      builder.addCase(createJob.fulfilled, (state) => {
+        state.isLoading = false;
+        toast.success("Job created");
+      }),
+      builder.addCase(createJob.rejected, (state, payload) => {
+        state.isLoading = false;
+        //@ts-ignore fix error payload type
+        toast.error(payload);
+      })
+    );
   },
 });
 

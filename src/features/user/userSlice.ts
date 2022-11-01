@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { MODEL__user, MODEL__Member, MODEL__NonMember } from "../../types";
+import { MODEL_user, MODEL_Member, MODEL_NonMember } from "../../types";
 import {
   customFetch,
   getUserFromLocalStorage,
@@ -12,7 +12,7 @@ import { RootState } from "../../store";
 type InitiaState = {
   isLoading: boolean;
   isSidebarOpen: boolean;
-  user: MODEL__user | null;
+  user: MODEL_user | null;
 };
 
 const initialState: InitiaState = {
@@ -22,14 +22,15 @@ const initialState: InitiaState = {
 };
 
 type RequestResponse = {
-  user: MODEL__user;
+  user: MODEL_user;
 };
 
 //TODO : refactor as it's getting long
+//TODO : update type to use similar typing as in jobSlice
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
-  async (user: MODEL__NonMember, thunkAPI) => {
+  async (user: MODEL_NonMember, thunkAPI) => {
     try {
       const resp = await customFetch.post<RequestResponse>(
         "/auth/register",
@@ -44,7 +45,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
-  async (user: MODEL__Member, thunkAPI) => {
+  async (user: MODEL_Member, thunkAPI) => {
     try {
       const resp = await customFetch.post<RequestResponse>("/auth/login", user);
       return resp.data;
@@ -58,12 +59,12 @@ type UpdateUserResponses = RequestResponse | any;
 
 export const updateUser: UpdateUserResponses = createAsyncThunk<
   UpdateUserResponses,
-  MODEL__user,
+  MODEL_user,
   {
     // Optional fields for defining thunkApi field types
     state: RootState;
   }
->("user/updateUser", async (user: MODEL__user, thunkAPI) => {
+>("user/updateUser", async (user: MODEL_user, thunkAPI) => {
   try {
     const resp = await customFetch.patch<RequestResponse>(
       "/auth/updateUser",

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FormRow } from "../../components";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import { MODEL__user } from "../../types";
+import { MODEL_user } from "../../types";
 import { updateUser } from "../../features/user/userSlice";
 import { AppDispatch, RootState } from "../../store";
 
@@ -11,7 +11,7 @@ export const Profile = () => {
   const { isLoading, user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch<AppDispatch>();
 
-  const [userData, setUserData] = useState<Omit<MODEL__user, "token">>({
+  const [userData, setUserData] = useState<Omit<MODEL_user, "token">>({
     name: user?.name || "",
     email: user?.email || "",
     lastName: user?.lastName || "",

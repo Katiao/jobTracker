@@ -1,13 +1,13 @@
-export type MODEL__Member = {
+export type MODEL_Member = {
   email: string;
   password: string;
 };
 
-export type MODEL__NonMember = {
+export type MODEL_NonMember = {
   name: string;
-} & MODEL__Member;
+} & MODEL_Member;
 
-export type MODEL__user = {
+export type MODEL_user = {
   email: string;
   lastName: string;
   location: string;
@@ -24,3 +24,11 @@ export type MODEL_jobTypeOptions = MODEL_jobTypeOption[];
 
 export type MODEL_statusOption = "interview" | "declined" | "pending";
 export type MODEL_statusOptions = MODEL_statusOption[];
+
+export type MODEL_job = {
+  position: string;
+  company: string;
+  jobLocation: string;
+  jobType: MODEL_jobTypeOption;
+  status: MODEL_statusOption;
+};

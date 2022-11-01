@@ -1,9 +1,9 @@
-import { MODEL__user } from "../types";
+import { MODEL_user } from "../types";
 
 // When user navigates away from the page, user details are lost
 //Therefore save to local storage
 
-export const addUserToLocalStorage = (user: MODEL__user | null) => {
+export const addUserToLocalStorage = (user: MODEL_user | null) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
 

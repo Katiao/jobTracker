@@ -9,6 +9,7 @@ import {
   handleChange,
   handleChangePayload,
   clearValues,
+  createJob,
 } from "../../features/job/jobSlice";
 
 export const AddJob = () => {
@@ -24,6 +25,7 @@ export const AddJob = () => {
     isEditing,
     editJobId,
   } = useSelector((store: RootState) => store.job);
+  const { user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,6 +35,12 @@ export const AddJob = () => {
       toast.error("Please Fill Out All Fields");
       return;
     }
+    dispatch(
+      createJob({
+        job: { position, company, jobLocation, jobType, status },
+        token: user?.token,
+      })
+    );
   };
   const handleJobInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

@@ -11,6 +11,7 @@ import {
   clearValues,
   createJob,
 } from "../../features/job/jobSlice";
+import { useEffect } from "react";
 
 export const AddJob = () => {
   const {
@@ -27,6 +28,10 @@ export const AddJob = () => {
   } = useSelector((store: RootState) => store.job);
   const { user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(handleChange({ name: "jobLocation", value: user?.location }));
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

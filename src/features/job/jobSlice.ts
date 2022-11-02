@@ -6,6 +6,7 @@ import {
   MODEL_statusOptions,
   MODEL_job,
 } from "../../types";
+import { getUserFromLocalStorage } from "../../utils";
 // import { useSelector } from "react-redux";
 import { customFetch } from "../../utils/axios";
 // import { getUserFromLocalStorage } from "../../utils";
@@ -35,7 +36,7 @@ const initialState: InitiaState = {
 export type handleChangePayload = {
   name: Partial<keyof InitiaState>;
   //TODO: find out why I cannot change this type
-  value: never;
+  value?: string;
 };
 
 type RequestResponse = {
@@ -65,7 +66,7 @@ export const createJob = createAsyncThunk<RequestResponse, RequestPayload>(
     } catch (error: any) {
       // logout user
       if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser());
+        thunkAPI.dispatch(logoutUser("Unauthorized! Logging out.."));
         return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
       }
       // basic setup
@@ -85,10 +86,14 @@ const jobSlice = createSlice({
       const {
         payload: { name, value },
       } = action;
+      //@ts-ignore
       state[name] = value;
     },
     clearValues: () => {
-      return initialState;
+      return {
+        ...initialState,
+        jobLocation: getUserFromLocalStorage()?.location || "",
+      };
     },
   },
   extraReducers: (builder) => {

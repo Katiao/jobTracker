@@ -5,6 +5,7 @@ import {
   MODEL_jobTypeOptions,
   MODEL_statusOptions,
   MODEL_job,
+  MODEL_jobEntry,
 } from "../../types";
 import { getUserFromLocalStorage } from "../../utils";
 // import { useSelector } from "react-redux";
@@ -40,7 +41,7 @@ export type handleChangePayload = {
 };
 
 type RequestResponse = {
-  job: MODEL_job;
+  job: MODEL_jobEntry;
 };
 
 type RequestPayload = {

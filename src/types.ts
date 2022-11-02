@@ -32,3 +32,11 @@ export type MODEL_job = {
   jobType: MODEL_jobTypeOption;
   status: MODEL_statusOption;
 };
+
+export type MODEL_jobEntry = MODEL_job & {
+  createdBy: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};

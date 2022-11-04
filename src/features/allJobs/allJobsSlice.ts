@@ -1,29 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { MODEL_job, MODEL_jobEntry } from "../../types";
 import { customFetch } from "../../utils/axios";
-
-type Sort = "latest" | "oldest" | "a-z" | "z-a";
-
-//TODO: improve type
-type InitialFiltersState = {
-  search: string;
-  searchStatus: string;
-  searchType: string;
-  sort: Sort;
-  sortOptions: Sort[];
-};
-
-//TODO: improve type
-type InitialState = {
-  isLoading: boolean;
-  jobs: MODEL_jobEntry[];
-  totalJobs: number;
-  numOfPages: number;
-  page: number;
-  stats: {};
-  monthlyApplications: [];
-} & InitialFiltersState;
+import { InitialFiltersState, InitialState, RequestResponse } from "./types";
 
 const initialFiltersState: InitialFiltersState = {
   search: "",
@@ -42,12 +20,6 @@ const initialState: InitialState = {
   stats: {},
   monthlyApplications: [],
   ...initialFiltersState,
-};
-
-type RequestResponse = {
-  jobs: InitialState["jobs"];
-  numOfPages: number;
-  totalJobs: number;
 };
 
 export const getAllJobs = createAsyncThunk<RequestResponse, string>(

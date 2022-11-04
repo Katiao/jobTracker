@@ -7,10 +7,10 @@ import { FormRowSelect } from "../../components";
 import { RootState } from "../../store";
 import {
   handleChange,
-  handleChangePayload,
   clearValues,
   createJob,
 } from "../../features/job/jobSlice";
+import { HandleChangePayload } from "../../features/job/types";
 import { useEffect } from "react";
 
 export const AddJob = () => {
@@ -50,8 +50,8 @@ export const AddJob = () => {
   const handleJobInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const name = e.target.name as handleChangePayload["name"];
-    const value = e.target.value as handleChangePayload["value"];
+    const name = e.target.name as HandleChangePayload["name"];
+    const value = e.target.value as HandleChangePayload["value"];
     dispatch(handleChange({ name, value }));
   };
 

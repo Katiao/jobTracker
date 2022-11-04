@@ -8,25 +8,13 @@ import {
   removeUserFromLocalStorage,
 } from "../../utils";
 import { RootState } from "../../store";
+import { InitialState, RequestResponse } from "./types";
 
-type InitiaState = {
-  isLoading: boolean;
-  isSidebarOpen: boolean;
-  user: MODEL_user | null;
-};
-
-const initialState: InitiaState = {
+const initialState: InitialState = {
   isLoading: false,
   isSidebarOpen: false,
   user: getUserFromLocalStorage(),
 };
-
-type RequestResponse = {
-  user: MODEL_user;
-};
-
-//TODO : refactor as it's getting long
-//TODO : update type to use similar typing as in jobSlice
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
@@ -55,6 +43,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+//TODO : fix type
 type UpdateUserResponses = RequestResponse | any;
 
 export const updateUser: UpdateUserResponses = createAsyncThunk<

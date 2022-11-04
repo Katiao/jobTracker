@@ -1,25 +1,17 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 // import { ValueOf } from "type-fest";
-import {
-  MODEL_jobTypeOptions,
-  MODEL_statusOptions,
-  MODEL_job,
-  MODEL_jobEntry,
-} from "../../types";
 import { getUserFromLocalStorage } from "../../utils";
 // import { useSelector } from "react-redux";
 import { customFetch } from "../../utils/axios";
 // import { getUserFromLocalStorage } from "../../utils";
 import { logoutUser } from "../user/userSlice";
-
-type InitiaState = MODEL_job & {
-  isLoading: boolean;
-  jobTypeOptions: MODEL_jobTypeOptions;
-  statusOptions: MODEL_statusOptions;
-  isEditing: boolean;
-  editJobId: string;
-};
+import {
+  InitiaState,
+  HandleChangePayload,
+  RequestPayload,
+  RequestResponse,
+} from "./types";
 
 const initialState: InitiaState = {
   isLoading: false,
@@ -32,21 +24,6 @@ const initialState: InitiaState = {
   status: "pending",
   isEditing: false,
   editJobId: "",
-};
-
-export type handleChangePayload = {
-  name: Partial<keyof InitiaState>;
-  //TODO: find out why I cannot change this type
-  value?: string;
-};
-
-type RequestResponse = {
-  job: MODEL_jobEntry;
-};
-
-type RequestPayload = {
-  job: MODEL_job;
-  token?: string;
 };
 
 export const createJob = createAsyncThunk<RequestResponse, RequestPayload>(
@@ -82,7 +59,7 @@ const jobSlice = createSlice({
   reducers: {
     handleChange: (
       state: InitiaState,
-      action: PayloadAction<handleChangePayload>
+      action: PayloadAction<HandleChangePayload>
     ) => {
       const {
         payload: { name, value },

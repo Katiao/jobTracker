@@ -1,3 +1,4 @@
+import { Slice } from "@reduxjs/toolkit";
 import { MODEL_jobEntry } from "../../types";
 
 type Sort = "latest" | "oldest" | "a-z" | "z-a";
@@ -27,3 +28,12 @@ export type RequestResponse = {
   numOfPages: number;
   totalJobs: number;
 };
+
+export type AllJobsSlice = Slice<
+  InitialState,
+  {
+    showLoading: (state: InitialState) => void;
+    hideLoading: (state: InitialState) => void;
+  },
+  string
+>;

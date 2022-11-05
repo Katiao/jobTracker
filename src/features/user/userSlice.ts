@@ -8,9 +8,9 @@ import {
   removeUserFromLocalStorage,
 } from "../../utils";
 import { RootState } from "../../store";
-import { InitialState, RequestResponse } from "./types";
+import { UserSliceInitialState, RequestResponse } from "./types";
 
-const initialState: InitialState = {
+const initialState: UserSliceInitialState = {
   isLoading: false,
   isSidebarOpen: false,
   user: getUserFromLocalStorage(),
@@ -50,7 +50,6 @@ export const updateUser: UpdateUserResponses = createAsyncThunk<
   UpdateUserResponses,
   MODEL_user,
   {
-    // Optional fields for defining thunkApi field types
     state: RootState;
   }
 >("user/updateUser", async (user: MODEL_user, thunkAPI) => {

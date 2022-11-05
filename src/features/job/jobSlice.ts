@@ -1,16 +1,20 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { RootState } from "../../store";
 // import { ValueOf } from "type-fest";
 import { getUserFromLocalStorage } from "../../utils";
+import { MODEL_job } from "../../types";
 // import { useSelector } from "react-redux";
 import { customFetch } from "../../utils/axios";
+import { showLoading, hideLoading, getAllJobs } from "../allJobs/allJobsSlice";
 // import { getUserFromLocalStorage } from "../../utils";
 import { logoutUser } from "../user/userSlice";
 import {
   InitiaState,
   HandleChangePayload,
-  RequestPayload,
-  RequestResponse,
+  PostRequestResponse,
+  JobSlice,
+  DeleteRequestResponse,
 } from "./types";
 
 const initialState: InitiaState = {
@@ -26,34 +30,51 @@ const initialState: InitiaState = {
   editJobId: "",
 };
 
-export const createJob = createAsyncThunk<RequestResponse, RequestPayload>(
-  "job/createJob",
-  async (requestPayload, thunkAPI) => {
-    try {
-      const resp = await customFetch.post<RequestResponse>(
-        "/jobs",
-        requestPayload.job,
-        {
-          headers: {
-            authorization: `Bearer ${requestPayload.token}`,
-          },
-        }
-      );
-      thunkAPI.dispatch(clearValues());
-      return resp.data;
-    } catch (error: any) {
-      // logout user
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser("Unauthorized! Logging out.."));
-        return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
-      }
-      // basic setup
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+export const createJob = createAsyncThunk<
+  PostRequestResponse,
+  MODEL_job,
+  { state: RootState }
+>("job/createJob", async (job, thunkAPI) => {
+  try {
+    const resp = await customFetch.post<PostRequestResponse>("/jobs", job, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
+      },
+    });
+    thunkAPI.dispatch(clearValues());
+    return resp.data;
+  } catch (error: any) {
+    // logout user
+    if (error.response.status === 401) {
+      thunkAPI.dispatch(logoutUser("Unauthorized! Logging out.."));
+      return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
     }
+    // basic setup
+    return thunkAPI.rejectWithValue(error.response.data.msg);
   }
-);
+});
 
-const jobSlice = createSlice({
+export const deleteJob = createAsyncThunk<
+  DeleteRequestResponse,
+  string,
+  { state: RootState }
+>("job/deleteJob", async (jobId, thunkAPI) => {
+  thunkAPI.dispatch(showLoading());
+  try {
+    const resp = await customFetch.delete(`/jobs/${jobId}`, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
+      },
+    });
+    thunkAPI.dispatch(getAllJobs());
+    return resp.data;
+  } catch (error: any) {
+    thunkAPI.dispatch(hideLoading());
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
+
+const jobSlice: JobSlice = createSlice({
   name: "job",
   initialState,
   reducers: {
@@ -64,7 +85,7 @@ const jobSlice = createSlice({
       const {
         payload: { name, value },
       } = action;
-      //@ts-ignore
+      //@ts-ignore TODO: fix type
       state[name] = value;
     },
     clearValues: () => {

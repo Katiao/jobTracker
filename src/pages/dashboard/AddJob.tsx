@@ -40,12 +40,7 @@ export const AddJob = () => {
       toast.error("Please Fill Out All Fields");
       return;
     }
-    dispatch(
-      createJob({
-        job: { position, company, jobLocation, jobType, status },
-        token: user?.token,
-      })
-    );
+    dispatch(createJob({ position, company, jobLocation, jobType, status }));
   };
   const handleJobInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

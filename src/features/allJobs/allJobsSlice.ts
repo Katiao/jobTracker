@@ -1,7 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { RootState } from "../../store";
 import { customFetch } from "../../utils/axios";
-import { InitialFiltersState, InitialState, RequestResponse } from "./types";
+import {
+  InitialFiltersState,
+  InitialState,
+  RequestResponse,
+  AllJobsSlice,
+} from "./types";
 
 const initialFiltersState: InitialFiltersState = {
   search: "",
@@ -22,29 +28,37 @@ const initialState: InitialState = {
   ...initialFiltersState,
 };
 
-export const getAllJobs = createAsyncThunk<RequestResponse, string>(
-  "allJobs/getJobs",
-  async (token, thunkAPI) => {
-    let url = `/jobs`;
+export const getAllJobs = createAsyncThunk<
+  RequestResponse,
+  undefined,
+  { state: RootState }
+>("allJobs/getJobs", async (_, thunkAPI) => {
+  let url = `/jobs`;
 
-    try {
-      const resp = await customFetch.get<RequestResponse>(url, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+  try {
+    const resp = await customFetch.get(url, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
+      },
+    });
 
-      return resp.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+    return resp.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
   }
-);
+});
 
-const allJobsSlice = createSlice({
+const allJobsSlice: AllJobsSlice = createSlice({
   name: "allJobs",
   initialState,
-  reducers: {},
+  reducers: {
+    showLoading: (state) => {
+      state.isLoading = true;
+    },
+    hideLoading: (state) => {
+      state.isLoading = false;
+    },
+  },
   extraReducers: (builder) => {
     return (
       builder.addCase(getAllJobs.pending, (state) => {
@@ -62,5 +76,7 @@ const allJobsSlice = createSlice({
     );
   },
 });
+
+export const { showLoading, hideLoading } = allJobsSlice.actions;
 
 export default allJobsSlice.reducer;

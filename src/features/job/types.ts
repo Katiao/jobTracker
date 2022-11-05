@@ -1,3 +1,5 @@
+import { PayloadAction, Slice } from "@reduxjs/toolkit";
+
 import {
   MODEL_jobTypeOptions,
   MODEL_statusOptions,
@@ -19,11 +21,27 @@ export type HandleChangePayload = {
   value?: string;
 };
 
-export type RequestResponse = {
+export type PostRequestResponse = {
   job: MODEL_jobEntry;
 };
 
 export type RequestPayload = {
   job: MODEL_job;
   token?: string;
+};
+
+export type JobSlice = Slice<
+  InitiaState,
+  {
+    handleChange: (
+      state: InitiaState,
+      action: PayloadAction<HandleChangePayload>
+    ) => void;
+    clearValues: () => InitiaState;
+  },
+  string
+>;
+
+export type DeleteRequestResponse = {
+  msg: string;
 };

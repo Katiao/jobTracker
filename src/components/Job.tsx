@@ -1,8 +1,12 @@
 import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from "react-icons/fa";
+import { AppDispatch } from "../store";
 import { Link } from "react-router-dom";
-import Wrapper from "../assets/wrappers/Job";
 import { useDispatch } from "react-redux";
+import { format } from "date-fns";
+import Wrapper from "../assets/wrappers/Job";
 import { MODEL_job } from "../types";
+import { JobInfo } from "./JobInfo";
+import { deleteJob } from "../features/job/jobSlice";
 
 type JobProps = MODEL_job & {
   _id: string;
@@ -18,7 +22,9 @@ export const Job = ({
   createdAt,
   status,
 }: JobProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const date = format(new Date(createdAt), "dd/MM/yyyy");
 
   return (
     <Wrapper>
@@ -31,7 +37,9 @@ export const Job = ({
       </header>
       <div className="content">
         <div className="content-center">
-          <h4>more content</h4>
+          <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+          <JobInfo icon={<FaCalendarAlt />} text={date} />
+          <JobInfo icon={<FaBriefcase />} text={jobType} />
           <div className={`status ${status}`}>{status}</div>
         </div>
         <footer>
@@ -47,7 +55,7 @@ export const Job = ({
               type="button"
               className="btn delete-btn"
               onClick={() => {
-                console.log("delete  job");
+                dispatch(deleteJob(_id));
               }}
             >
               Delete

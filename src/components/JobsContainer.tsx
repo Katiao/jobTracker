@@ -3,17 +3,16 @@ import { Job } from "./Job";
 import { Loading } from "./Loading";
 import Wrapper from "../assets/wrappers/JobsContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
+import { RootState, AppDispatch } from "../store";
 import { getAllJobs } from "../features/allJobs/allJobsSlice";
 
 export const JobsContainer = () => {
   const { jobs, isLoading } = useSelector((store: RootState) => store.allJobs);
   const { user } = useSelector((store: RootState) => store.user);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    //@ts-ignore TODO: fix type & consider moving token to slice
-    dispatch(getAllJobs(user?.token));
+    dispatch(getAllJobs());
   }, []);
 
   if (isLoading) {

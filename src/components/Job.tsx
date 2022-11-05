@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import Wrapper from "../assets/wrappers/Job";
 import { MODEL_job } from "../types";
 import { JobInfo } from "./JobInfo";
-import { deleteJob } from "../features/job/jobSlice";
+import { setEditJob, deleteJob } from "../features/job/jobSlice";
 
 type JobProps = MODEL_job & {
   _id: string;
@@ -47,7 +47,18 @@ export const Job = ({
             <Link
               to="/add-job"
               className="btn edit-btn"
-              onClick={() => console.log("edit job")}
+              onClick={() => {
+                dispatch(
+                  setEditJob({
+                    editJobId: _id,
+                    position,
+                    company,
+                    jobLocation,
+                    jobType,
+                    status,
+                  })
+                );
+              }}
             >
               Edit
             </Link>

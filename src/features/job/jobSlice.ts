@@ -15,6 +15,8 @@ import {
   PostRequestResponse,
   JobSlice,
   DeleteRequestResponse,
+  PatchRequestResponse,
+  EditJobArg,
 } from "./types";
 
 const initialState: InitiaState = {
@@ -74,6 +76,24 @@ export const deleteJob = createAsyncThunk<
   }
 });
 
+export const editJob = createAsyncThunk<
+  PatchRequestResponse,
+  EditJobArg,
+  { state: RootState }
+>("job/editJob", async ({ jobId, job }, thunkAPI) => {
+  try {
+    const resp = await customFetch.patch(`/jobs/${jobId}`, job, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
+      },
+    });
+    thunkAPI.dispatch(clearValues());
+    return resp.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
+
 const jobSlice: JobSlice = createSlice({
   name: "job",
   initialState,
@@ -94,6 +114,12 @@ const jobSlice: JobSlice = createSlice({
         jobLocation: getUserFromLocalStorage()?.location || "",
       };
     },
+    setEditJob: (
+      state: InitiaState,
+      { payload }: { payload: Partial<InitiaState> }
+    ) => {
+      return { ...state, isEditing: true, ...payload };
+    },
   },
   extraReducers: (builder) => {
     return (
@@ -108,11 +134,23 @@ const jobSlice: JobSlice = createSlice({
         state.isLoading = false;
         //@ts-ignore fix error payload type
         toast.error(payload);
+      }),
+      builder.addCase(editJob.pending, (state) => {
+        state.isLoading = true;
+      }),
+      builder.addCase(editJob.fulfilled, (state) => {
+        state.isLoading = false;
+        toast.success("Job modified...");
+      }),
+      builder.addCase(editJob.rejected, (state, payload) => {
+        state.isLoading = false;
+        //@ts-ignore fix error payload type
+        toast.error(payload);
       })
     );
   },
 });
 
-export const { handleChange, clearValues } = jobSlice.actions;
+export const { handleChange, clearValues, setEditJob } = jobSlice.actions;
 
 export default jobSlice.reducer;

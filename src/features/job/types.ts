@@ -21,15 +21,6 @@ export type HandleChangePayload = {
   value?: string;
 };
 
-export type PostRequestResponse = {
-  job: MODEL_jobEntry;
-};
-
-export type RequestPayload = {
-  job: MODEL_job;
-  token?: string;
-};
-
 export type JobSlice = Slice<
   InitiaState,
   {
@@ -38,10 +29,27 @@ export type JobSlice = Slice<
       action: PayloadAction<HandleChangePayload>
     ) => void;
     clearValues: () => InitiaState;
+    setEditJob: (
+      state: InitiaState,
+      action: { payload: Partial<InitiaState>; type: string }
+    ) => InitiaState;
   },
   string
 >;
 
+export type PostRequestResponse = {
+  job: MODEL_jobEntry;
+};
+
 export type DeleteRequestResponse = {
   msg: string;
+};
+
+export type PatchRequestResponse = {
+  updatedJob: MODEL_jobEntry;
+};
+
+export type EditJobArg = {
+  jobId: InitiaState["editJobId"];
+  job: MODEL_job;
 };

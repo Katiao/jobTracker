@@ -38,11 +38,7 @@ export const createJob = createAsyncThunk<
   { state: RootState }
 >("job/createJob", async (job, thunkAPI) => {
   try {
-    const resp = await customFetch.post<PostRequestResponse>("/jobs", job, {
-      headers: {
-        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
-      },
-    });
+    const resp = await customFetch.post<PostRequestResponse>("/jobs", job);
     thunkAPI.dispatch(clearValues());
     return resp.data;
   } catch (error: any) {
@@ -63,11 +59,7 @@ export const deleteJob = createAsyncThunk<
 >("job/deleteJob", async (jobId, thunkAPI) => {
   thunkAPI.dispatch(showLoading());
   try {
-    const resp = await customFetch.delete(`/jobs/${jobId}`, {
-      headers: {
-        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
-      },
-    });
+    const resp = await customFetch.delete(`/jobs/${jobId}`);
     thunkAPI.dispatch(getAllJobs());
     return resp.data;
   } catch (error: any) {
@@ -82,11 +74,7 @@ export const editJob = createAsyncThunk<
   { state: RootState }
 >("job/editJob", async ({ jobId, job }, thunkAPI) => {
   try {
-    const resp = await customFetch.patch(`/jobs/${jobId}`, job, {
-      headers: {
-        authorization: `Bearer ${thunkAPI.getState().user?.user?.token}`,
-      },
-    });
+    const resp = await customFetch.patch(`/jobs/${jobId}`, job);
     thunkAPI.dispatch(clearValues());
     return resp.data;
   } catch (error: any) {

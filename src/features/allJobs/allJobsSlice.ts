@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { RootState } from "../../store";
 import { customFetch } from "../../utils/axios";
+import { MODEL_Stats } from "../../types";
 import {
   InitialFiltersState,
   InitialState,
-  RequestResponse,
+  AllJobsRequestResponse,
   AllJobsSlice,
 } from "./types";
 
@@ -23,21 +24,37 @@ const initialState: InitialState = {
   totalJobs: 0,
   numOfPages: 1,
   page: 1,
-  stats: {},
+  stats: {
+    pending: 0,
+    interview: 0,
+    declined: 0,
+  },
   monthlyApplications: [],
   ...initialFiltersState,
 };
 
 export const getAllJobs = createAsyncThunk<
-  RequestResponse,
+  AllJobsRequestResponse,
   undefined,
   { state: RootState }
 >("allJobs/getJobs", async (_, thunkAPI) => {
   let url = `/jobs`;
-
   try {
     const resp = await customFetch.get(url);
 
+    return resp.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
+
+export const showStats = createAsyncThunk<
+  MODEL_Stats,
+  undefined,
+  { state: RootState }
+>("allJobs/showStats", async (_, thunkAPI) => {
+  try {
+    const resp = await customFetch.get("/jobs/stats");
     return resp.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -65,6 +82,19 @@ const allJobsSlice: AllJobsSlice = createSlice({
         state.jobs = payload.jobs;
       }),
       builder.addCase(getAllJobs.rejected, (state, payload) => {
+        state.isLoading = false;
+        //@ts-ignore fix error payload type
+        toast.error(payload);
+      }),
+      builder.addCase(showStats.pending, (state) => {
+        state.isLoading = true;
+      }),
+      builder.addCase(showStats.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.stats = payload.defaultStats;
+        state.monthlyApplications = payload.monthlyApplications;
+      }),
+      builder.addCase(showStats.rejected, (state, payload) => {
         state.isLoading = false;
         //@ts-ignore fix error payload type
         toast.error(payload);

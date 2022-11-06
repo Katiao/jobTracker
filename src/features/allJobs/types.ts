@@ -1,5 +1,5 @@
 import { Slice } from "@reduxjs/toolkit";
-import { MODEL_jobEntry } from "../../types";
+import { MODEL_jobEntry, MODEL_Stats } from "../../types";
 
 type Sort = "latest" | "oldest" | "a-z" | "z-a";
 
@@ -12,18 +12,17 @@ export type InitialFiltersState = {
   sortOptions: Sort[];
 };
 
-//TODO: improve type
 export type InitialState = {
   isLoading: boolean;
   jobs: MODEL_jobEntry[];
   totalJobs: number;
   numOfPages: number;
   page: number;
-  stats: {};
-  monthlyApplications: [];
+  stats: MODEL_Stats["defaultStats"];
+  monthlyApplications: MODEL_Stats["monthlyApplications"];
 } & InitialFiltersState;
 
-export type RequestResponse = {
+export type AllJobsRequestResponse = {
   jobs: InitialState["jobs"];
   numOfPages: number;
   totalJobs: number;

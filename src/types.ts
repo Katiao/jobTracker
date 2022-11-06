@@ -40,3 +40,21 @@ export type MODEL_jobEntry = MODEL_job & {
   updatedAt: string;
   __v: number;
 };
+
+type DefaultStats = {
+  pending: number;
+  interview: number;
+  declined: number;
+};
+
+type MonthlyApplicationData = {
+  date: "string";
+  count: number;
+};
+
+type MonthlyApplications = MonthlyApplicationData[];
+
+export type MODEL_Stats = {
+  defaultStats: DefaultStats;
+  monthlyApplications: MonthlyApplications;
+};

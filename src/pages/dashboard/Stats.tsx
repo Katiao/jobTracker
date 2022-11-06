@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { StatsContainer, Loading, ChartContainer } from "../../components";
+import { StatsContainer, Loading, ChartsContainer } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { showStats } from "../../features/allJobs/allJobsSlice";
@@ -22,7 +22,7 @@ export const Stats = () => {
     <>
       <StatsContainer />
 
-      {monthlyApplications.length > 0 && <ChartContainer />}
+      {monthlyApplications.length > 0 && <ChartsContainer />}
     </>
   );
 };

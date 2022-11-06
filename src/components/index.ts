@@ -7,5 +7,5 @@ export { FormRowSelect } from "./FormRowSelect";
 export { JobsContainer } from "./JobsContainer";
 export { SearchContainer } from "./SearchContainer";
 export { StatsContainer } from "./StatsContainer";
-export { ChartContainer } from "./ChartContainer";
+export { ChartsContainer } from "./ChartsContainer";
 export { Loading } from "./Loading";

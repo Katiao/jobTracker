@@ -3,14 +3,15 @@ import { MODEL_jobEntry, MODEL_Stats } from "../../types";
 
 type Sort = "latest" | "oldest" | "a-z" | "z-a";
 
-//TODO: improve type
 export type InitialFiltersState = {
   search: string;
-  searchStatus: string;
-  searchType: string;
+  searchStatus: "all" | "interview" | "declined" | "pending";
+  searchType: "all" | "full-time" | "part-time" | "remote" | "internship";
   sort: Sort;
   sortOptions: Sort[];
 };
+
+export type SearchFormInputs = Omit<InitialFiltersState, "sortOptions">;
 
 export type InitialState = {
   isLoading: boolean;
@@ -33,6 +34,18 @@ export type AllJobsSlice = Slice<
   {
     showLoading: (state: InitialState) => void;
     hideLoading: (state: InitialState) => void;
+    handleChange: (
+      state: InitialState,
+      {
+        payload: { name, value },
+      }: {
+        payload: {
+          name: keyof SearchFormInputs;
+          value: string;
+        };
+      }
+    ) => void;
+    clearFilters: (state: InitialState) => void;
   },
   string
 >;

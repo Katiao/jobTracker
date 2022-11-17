@@ -46,6 +46,7 @@ export type AllJobsSlice = Slice<
       }
     ) => void;
     clearFilters: (state: InitialState) => void;
+    changePage: (state: InitialState, { payload }: { payload: number }) => void;
   },
   string
 >;

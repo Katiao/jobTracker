@@ -8,15 +8,24 @@ import { getAllJobs } from "../features/allJobs/allJobsSlice";
 import { PageBtnContainer } from "../components/PageBtnContainer";
 
 export const JobsContainer = () => {
-  const { jobs, isLoading, page, totalJobs, numOfPages } = useSelector(
-    (store: RootState) => store.allJobs
-  );
-  const { user } = useSelector((store: RootState) => store.user);
+  const {
+    jobs,
+    isLoading,
+    page,
+    totalJobs,
+    numOfPages,
+    search,
+    searchStatus,
+    searchType,
+    sort,
+  } = useSelector((store: RootState) => store.allJobs);
+  // const { user } = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(getAllJobs());
-  }, []);
+    // eslint-disable-next-line
+  }, [page, search, searchStatus, searchType, sort]);
 
   if (isLoading) {
     return <Loading center />;

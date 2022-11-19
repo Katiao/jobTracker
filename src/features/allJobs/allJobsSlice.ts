@@ -78,8 +78,12 @@ const allJobsSlice: AllJobsSlice = createSlice({
       state.isLoading = false;
     },
     handleChange: (state, { payload: { name, value } }) => {
+      // set page to 1 when state changes in search container to avoid bug of no results due page not existing.
+      state.page = 1;
       //TODO: find a better solution for typing here
-      (state as any)[name] = value;
+      // (state as any)[name] = value;
+      //@ts-ignore
+      state[name] = value;
     },
     clearFilters: (state) => {
       return { ...state, ...initialFiltersState };

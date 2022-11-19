@@ -17,6 +17,8 @@ export const SearchContainer = () => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
+    // Prevents changing state too fast, wait until request displayed before going to to next request
+    if (isLoading) return;
     dispatch(
       handleChange({
         name: e.target.name as keyof SearchFormInputs,

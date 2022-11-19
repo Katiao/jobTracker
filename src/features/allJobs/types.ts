@@ -1,4 +1,4 @@
-import { Slice } from "@reduxjs/toolkit";
+import { Slice, CaseReducer } from "@reduxjs/toolkit";
 import { MODEL_jobEntry, MODEL_Stats } from "../../types";
 
 type Sort = "latest" | "oldest" | "a-z" | "z-a";
@@ -32,21 +32,21 @@ export type AllJobsRequestResponse = {
 export type AllJobsSlice = Slice<
   InitialState,
   {
-    showLoading: (state: InitialState) => void;
-    hideLoading: (state: InitialState) => void;
-    handleChange: (
-      state: InitialState,
+    showLoading: CaseReducer<InitialState>;
+    hideLoading: CaseReducer<InitialState>;
+    handleChange: CaseReducer<
+      InitialState,
       {
-        payload: { name, value },
-      }: {
         payload: {
           name: keyof SearchFormInputs;
           value: string;
         };
+        type: string;
       }
-    ) => void;
-    clearFilters: (state: InitialState) => void;
-    changePage: (state: InitialState, { payload }: { payload: number }) => void;
+    >;
+    clearFilters: CaseReducer<InitialState>;
+    changePage: CaseReducer<InitialState, { payload: number; type: string }>;
+    clearAllJobsState: CaseReducer<InitialState>;
   },
   string
 >;

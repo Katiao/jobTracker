@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 
 import Wrapper from "../assets/wrappers/Navbar";
-import { toggleSidebar, logoutUser } from "../features/user/userSlice";
+import { toggleSidebar, clearStore } from "../features/user/userSlice";
 import { Logo } from "./Logo";
 import { RootState, AppDispatch } from "../store";
 
@@ -20,10 +20,6 @@ export const Navbar = () => {
 
   const toggle = () => {
     dispatch(toggleSidebar());
-  };
-
-  const logout = () => {
-    dispatch(logoutUser("Logging out..."));
   };
 
   return (
@@ -49,7 +45,11 @@ export const Navbar = () => {
             {showLogout ? <FaCaretUp /> : <FaCaretDown />}
           </button>
           <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
-            <button type="button" className="dropdown-btn" onClick={logout}>
+            <button
+              type="button"
+              className="dropdown-btn"
+              onClick={() => dispatch(clearStore("Logout Successful..."))}
+            >
               logout
             </button>
           </div>

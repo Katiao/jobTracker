@@ -80,9 +80,7 @@ const allJobsSlice: AllJobsSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       // set page to 1 when state changes in search container to avoid bug of no results due page not existing.
       state.page = 1;
-      //TODO: find a better solution for typing here
-      // (state as any)[name] = value;
-      //@ts-ignore
+      //@ts-ignore. TODO: fix types
       state[name] = value;
     },
     clearFilters: (state) => {
@@ -91,6 +89,7 @@ const allJobsSlice: AllJobsSlice = createSlice({
     changePage: (state, { payload }) => {
       state.page = payload;
     },
+    clearAllJobsState: () => initialState,
   },
   extraReducers: (builder) => {
     return (
@@ -131,6 +130,7 @@ export const {
   handleChange,
   clearFilters,
   changePage,
+  clearAllJobsState,
 } = allJobsSlice.actions;
 
 export default allJobsSlice.reducer;

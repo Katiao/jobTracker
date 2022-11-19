@@ -9,6 +9,8 @@ import {
 } from "../../utils";
 import { RootState } from "../../store";
 import { UserSliceInitialState, RequestResponse } from "./types";
+import { clearAllJobsState } from "../allJobs/allJobsSlice";
+import { clearValues } from "../job/jobSlice";
 
 const initialState: UserSliceInitialState = {
   isLoading: false,
@@ -69,6 +71,24 @@ export const updateUser: UpdateUserResponses = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.response.data.msg);
   }
 });
+
+export const clearStore = createAsyncThunk(
+  "user/clearStore",
+  async (message: string, thunkAPI) => {
+    try {
+      // logout user
+      thunkAPI.dispatch(logoutUser(message));
+      // clear jobs value
+      thunkAPI.dispatch(clearAllJobsState());
+      // clear job input values
+      thunkAPI.dispatch(clearValues());
+      return Promise.resolve();
+    } catch (error) {
+      // console.log(error);
+      return Promise.reject();
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -132,6 +152,9 @@ const userSlice = createSlice({
       builder.addCase(updateUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
+      }),
+      builder.addCase(clearStore.rejected, () => {
+        toast.error("There was an error");
       })
     );
   },

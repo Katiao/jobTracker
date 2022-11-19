@@ -5,10 +5,9 @@ import { RootState } from "../../store";
 import { getUserFromLocalStorage } from "../../utils";
 import { MODEL_job } from "../../types";
 // import { useSelector } from "react-redux";
-import { customFetch } from "../../utils/axios";
+import { customFetch, handleRequestError } from "../../utils/axios";
 import { showLoading, hideLoading, getAllJobs } from "../allJobs/allJobsSlice";
 // import { getUserFromLocalStorage } from "../../utils";
-import { logoutUser } from "../user/userSlice";
 import {
   InitiaState,
   HandleChangePayload,
@@ -42,13 +41,7 @@ export const createJob = createAsyncThunk<
     thunkAPI.dispatch(clearValues());
     return resp.data;
   } catch (error: any) {
-    // logout user
-    if (error.response.status === 401) {
-      thunkAPI.dispatch(logoutUser("Unauthorized! Logging out.."));
-      return thunkAPI.rejectWithValue("Unauthorized! Logging Out...");
-    }
-    // basic setup
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return handleRequestError(error, thunkAPI);
   }
 });
 
@@ -64,7 +57,7 @@ export const deleteJob = createAsyncThunk<
     return resp.data;
   } catch (error: any) {
     thunkAPI.dispatch(hideLoading());
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return handleRequestError(error, thunkAPI);
   }
 });
 
@@ -78,7 +71,7 @@ export const editJob = createAsyncThunk<
     thunkAPI.dispatch(clearValues());
     return resp.data;
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return handleRequestError(error, thunkAPI);
   }
 });
 

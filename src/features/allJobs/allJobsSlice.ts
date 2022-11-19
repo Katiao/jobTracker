@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { RootState } from "../../store";
-import { customFetch } from "../../utils/axios";
+import { customFetch, handleRequestError } from "../../utils/axios";
 import { MODEL_Stats } from "../../types";
 import {
   InitialFiltersState,
@@ -50,7 +50,7 @@ export const getAllJobs = createAsyncThunk<
 
     return resp.data;
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return handleRequestError(error, thunkAPI);
   }
 });
 
@@ -63,7 +63,7 @@ export const showStats = createAsyncThunk<
     const resp = await customFetch.get("/jobs/stats");
     return resp.data;
   } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return handleRequestError(error, thunkAPI);
   }
 });
 

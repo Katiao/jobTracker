@@ -6,6 +6,7 @@ import {
   getUserFromLocalStorage,
   addUserToLocalStorage,
   removeUserFromLocalStorage,
+  handleRequestError,
 } from "../../utils";
 import { RootState } from "../../store";
 import { UserSliceInitialState, RequestResponse } from "./types";
@@ -28,7 +29,7 @@ export const registerUser = createAsyncThunk(
       );
       return resp.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      return handleRequestError(error, thunkAPI);
     }
   }
 );
@@ -40,7 +41,7 @@ export const loginUser = createAsyncThunk(
       const resp = await customFetch.post<RequestResponse>("/auth/login", user);
       return resp.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      return handleRequestError(error, thunkAPI);
     }
   }
 );
@@ -67,8 +68,7 @@ export const updateUser: UpdateUserResponses = createAsyncThunk<
       thunkAPI.dispatch(logoutUser("Unauthorized! Logging out.."));
       return thunkAPI.rejectWithValue("Unauthorized! Logging out..");
     }
-    console.log(error.response);
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return handleRequestError(error, thunkAPI);
   }
 });
 

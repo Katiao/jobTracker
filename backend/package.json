@@ -5,7 +5,9 @@
   "main": "job-tracker/backend/server.ts",
   "type": "module",
   "scripts": {
-    "start": "nodemon server"
+    "server": "nodemon server --ignore client",
+    "client": "npm start --prefix ../frontend",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/Katiao/jobTracker#readme",
   "devDependencies": {
+    "concurrently": "^7.6.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {

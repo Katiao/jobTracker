@@ -20,9 +20,10 @@ export const Stats = () => {
 
   return (
     <>
-      <StatsContainer />
+      <h1>Stats</h1>
+      {/* <StatsContainer />
 
-      {monthlyApplications.length > 0 && <ChartsContainer />}
+      {monthlyApplications.length > 0 && <ChartsContainer />} */}
     </>
   );
 };

@@ -22,8 +22,7 @@ customFetch.interceptors.request.use(
 );
 
 export const handleRequestError = (error: any, thunkAPI: any) => {
-  if (error.response.status === 401) {
-    // TODO: fix issue of toast showing up twice
+  if (error.response.status === 401 && !error.response.data.msg) {
     thunkAPI.dispatch(clearStore("Unauthorized! Logging Out..."));
     return thunkAPI.rejectWithValue();
   }

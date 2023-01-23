@@ -12,7 +12,6 @@ export type MODEL_user = {
   lastName: string;
   location: string;
   name: string;
-  token: string;
 };
 
 export type MODEL_jobTypeOption =
@@ -57,4 +56,10 @@ type MonthlyApplications = MonthlyApplicationData[];
 export type MODEL_Stats = {
   defaultStats: DefaultStats;
   monthlyApplications: MonthlyApplications;
+};
+
+export type RegisterAndLoginRequestResponse = {
+  user: MODEL_user;
+  token: string;
+  location?: string;
 };

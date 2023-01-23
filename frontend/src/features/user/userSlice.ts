@@ -9,7 +9,8 @@ import {
   handleRequestError,
 } from "../../utils";
 import { RootState } from "../../store";
-import { UserSliceInitialState, RequestResponse } from "./types";
+import { RegisterAndLoginRequestResponse } from "../../types";
+import { UserSliceInitialState } from "./types";
 import { clearAllJobsState } from "../allJobs/allJobsSlice";
 import { clearValues } from "../job/jobSlice";
 
@@ -23,7 +24,7 @@ export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (user: MODEL_NonMember, thunkAPI) => {
     try {
-      const resp = await customFetch.post<RequestResponse>(
+      const resp = await customFetch.post<RegisterAndLoginRequestResponse>(
         "/auth/register",
         user
       );
@@ -38,7 +39,10 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (user: MODEL_Member, thunkAPI) => {
     try {
-      const resp = await customFetch.post<RequestResponse>("/auth/login", user);
+      const resp = await customFetch.post<RegisterAndLoginRequestResponse>(
+        "/auth/login",
+        user
+      );
       return resp.data;
     } catch (error: any) {
       return handleRequestError(error, thunkAPI);
@@ -47,7 +51,7 @@ export const loginUser = createAsyncThunk(
 );
 
 //TODO : fix type
-type UpdateUserResponses = RequestResponse | any;
+type UpdateUserResponses = RegisterAndLoginRequestResponse | any;
 
 export const updateUser: UpdateUserResponses = createAsyncThunk<
   UpdateUserResponses,
@@ -57,11 +61,11 @@ export const updateUser: UpdateUserResponses = createAsyncThunk<
   }
 >("user/updateUser", async (user: MODEL_user, thunkAPI) => {
   try {
-    const resp = await customFetch.patch<RequestResponse>(
+    const resp = await customFetch.patch<RegisterAndLoginRequestResponse>(
       "/auth/updateUser",
       user
     );
-    return resp.data as RequestResponse;
+    return resp.data as RegisterAndLoginRequestResponse;
     //TODO : improve error type if possible
   } catch (error: any) {
     if (error.response.status === 401) {
@@ -113,10 +117,10 @@ const userSlice = createSlice({
       }),
       builder.addCase(
         registerUser.fulfilled,
-        (state, { payload: { user } }) => {
+        (state, { payload: { user, token, location } }) => {
           state.isLoading = false;
           state.user = user;
-          addUserToLocalStorage(user);
+          addUserToLocalStorage({ user, token, location });
           toast.success(`Hello There ${user.name}`);
         }
       ),
@@ -128,12 +132,15 @@ const userSlice = createSlice({
       builder.addCase(loginUser.pending, (state) => {
         state.isLoading = true;
       }),
-      builder.addCase(loginUser.fulfilled, (state, { payload: { user } }) => {
-        state.isLoading = false;
-        state.user = user;
-        addUserToLocalStorage(user);
-        toast.success(`Welcome back ${user?.name}`);
-      }),
+      builder.addCase(
+        loginUser.fulfilled,
+        (state, { payload: { user, token, location } }) => {
+          state.isLoading = false;
+          state.user = user;
+          addUserToLocalStorage({ user, token, location });
+          toast.success(`Welcome back ${user?.name}`);
+        }
+      ),
       builder.addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         const { payload } = action;

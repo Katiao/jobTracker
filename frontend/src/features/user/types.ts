@@ -5,7 +5,3 @@ export type UserSliceInitialState = {
   isSidebarOpen: boolean;
   user: MODEL_user | null;
 };
-
-export type RequestResponse = {
-  user: MODEL_user;
-};

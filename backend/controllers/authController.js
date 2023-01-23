@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../models/User.js";
-import { BadRequestError } from "../errors/index.js";
+import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
 
 // Note: no need to use try catch block to pass on error to error middleware
 // as using "express-async-errors" package

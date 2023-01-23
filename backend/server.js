@@ -16,6 +16,7 @@ import jobsRouter from "./routes/jobsRoutes.js";
 // middleware
 import notFoundMiddleWare from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+import authenticateUser from "./middleware/auth.js";
 
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
@@ -29,7 +30,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", jobsRouter);
+
+//restricted: requires token
+app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 
 app.use(notFoundMiddleWare);
 app.use(errorHandlerMiddleware);

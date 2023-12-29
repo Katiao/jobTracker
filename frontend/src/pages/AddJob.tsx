@@ -1,17 +1,17 @@
-import { FormRow } from "../../components";
-import Wrapper from "../../assets/wrappers/DashboardFormPage";
+import { FormRow } from "../components";
+import Wrapper from "../assets/wrappers/DashboardFormPage";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { AppDispatch } from "../../store";
-import { FormRowSelect } from "../../components";
-import { RootState } from "../../store";
+import { AppDispatch } from "../store";
+import { FormRowSelect } from "../components";
+import { RootState } from "../store";
 import {
   handleChange,
   clearValues,
   createJob,
   editJob,
-} from "../../features/job/jobSlice";
-import { HandleChangePayload } from "../../features/job/types";
+} from "../features/job/jobSlice";
+import { HandleChangePayload } from "../features/job/types";
 import { useEffect } from "react";
 
 export const AddJob = () => {

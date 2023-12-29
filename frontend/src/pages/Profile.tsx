@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { FormRow } from "../../components";
-import Wrapper from "../../assets/wrappers/DashboardFormPage";
-import { MODEL_user } from "../../types";
-import { updateUser } from "../../features/user/userSlice";
-import { AppDispatch, RootState } from "../../store";
+import { FormRow } from "../components";
+import Wrapper from "../assets/wrappers/DashboardFormPage";
+import { MODEL_user } from "../types";
+import { updateUser } from "../features/user/userSlice";
+import { AppDispatch, RootState } from "../store";
 
 export const Profile = () => {
   const { isLoading, user } = useSelector((store: RootState) => store.user);

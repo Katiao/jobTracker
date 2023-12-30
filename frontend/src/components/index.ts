@@ -9,3 +9,4 @@ export { SearchContainer } from "./SearchContainer";
 export { StatsContainer } from "./StatsContainer";
 export { ChartsContainer } from "./ChartsContainer";
 export { Loading } from "./Loading";
+export { SubmitBtn } from "./SubmitBtn";

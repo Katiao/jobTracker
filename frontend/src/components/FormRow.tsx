@@ -1,31 +1,23 @@
 type FormRowProps = {
   name: string;
   type: string;
-  value: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   labelText?: string;
+  //TODO: add type
+  // onChange: any;
 };
 
-export const FormRow = ({
-  name,
-  type,
-  value,
-  handleChange,
-  labelText,
-}: FormRowProps) => {
+export const FormRow = ({ type, name, labelText }: FormRowProps) => {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
         {labelText || name}
       </label>
-
       <input
         type={type}
-        value={value}
         id={name}
         name={name}
-        onChange={handleChange}
         className="form-input"
+        required
       />
     </div>
   );

@@ -30,6 +30,7 @@ const Wrapper = styled.section`
     color: var(--primary-500);
     cursor: pointer;
     letter-spacing: var(--letterSpacing);
+    margin-left: 0.5rem;
   }
 `;
 export default Wrapper;

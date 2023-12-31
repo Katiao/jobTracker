@@ -1,10 +1,24 @@
 import { Outlet } from "react-router-dom";
 import { useState, createContext } from "react";
 
-import { Wrapper } from "../assets/wrappers/Dashboard";
-import { SmallSidebar, BigSidebar, Navbar } from "../components";
+import { Wrapper } from "../../assets/wrappers/Dashboard";
+import { SmallSidebar, BigSidebar, Navbar } from "../../components";
 
-export const DashboardContext = createContext({});
+// TODO: update later
+type DashboardContextValues = {
+  user: { name: string };
+  showSidebar: boolean;
+  isDarkTheme: boolean;
+  toggleDarkTheme: void;
+  toggleSidebar: () => void;
+  logoutUser: void;
+};
+
+// We explicitly allow `undefined` as a potential value here
+// to tell the compiler we plan to deal with it.
+export const DashboardContext = createContext<
+  DashboardContextValues | undefined
+>(undefined);
 
 export const DashboardLayout = () => {
   // Context default Values & setting functions setting values

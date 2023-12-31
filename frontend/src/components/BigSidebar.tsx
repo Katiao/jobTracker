@@ -7,7 +7,10 @@ import { RootState } from "../store";
 export const BigSidebar = () => {
   const { isSidebarOpen } = useSelector((store: RootState) => store.user);
   return (
-    <h1>Big sidebar</h1>
+    <Wrapper>
+      <h1>Big sidebar</h1>
+    </Wrapper>
+
     // <Wrapper>
     //   <div
     //     className={

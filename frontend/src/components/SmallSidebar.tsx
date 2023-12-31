@@ -14,7 +14,10 @@ export const SmallSidebar = () => {
   };
 
   return (
-    <h1>Small sidebar</h1>
+    <Wrapper>
+      <h1>Small sidebar</h1>
+    </Wrapper>
+
     // <Wrapper>
     //   <div
     //     className={

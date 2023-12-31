@@ -23,38 +23,39 @@ export const Navbar = () => {
   };
 
   return (
-    <Wrapper>
-      <div className="nav-center">
-        <button type="button" className="toggle-btn" onClick={toggle}>
-          <FaAlignLeft />
-        </button>
+    <h1>navbar</h1>
+    // <Wrapper>
+    //   <div className="nav-center">
+    //     <button type="button" className="toggle-btn" onClick={toggle}>
+    //       <FaAlignLeft />
+    //     </button>
 
-        <div>
-          <Logo />
-          <h3 className="logo-text">dashboard</h3>
-        </div>
-        <div className="btn-container">
-          <button
-            type="button"
-            className="btn"
-            onClick={() => setShowLogout(!showLogout)}
-          >
-            <FaUserCircle />
-            {user?.name}
+    //     <div>
+    //       <Logo />
+    //       <h3 className="logo-text">dashboard</h3>
+    //     </div>
+    //     <div className="btn-container">
+    //       <button
+    //         type="button"
+    //         className="btn"
+    //         onClick={() => setShowLogout(!showLogout)}
+    //       >
+    //         <FaUserCircle />
+    //         {user?.name}
 
-            {showLogout ? <FaCaretUp /> : <FaCaretDown />}
-          </button>
-          <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
-            <button
-              type="button"
-              className="dropdown-btn"
-              onClick={() => dispatch(clearStore("Logout Successful..."))}
-            >
-              logout
-            </button>
-          </div>
-        </div>
-      </div>
-    </Wrapper>
+    //         {showLogout ? <FaCaretUp /> : <FaCaretDown />}
+    //       </button>
+    //       <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
+    //         <button
+    //           type="button"
+    //           className="dropdown-btn"
+    //           onClick={() => dispatch(clearStore("Logout Successful..."))}
+    //         >
+    //           logout
+    //         </button>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </Wrapper>
   );
 };

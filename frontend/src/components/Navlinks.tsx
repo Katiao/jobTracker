@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useDashboardContext } from "../pages/DashboardLayout/useDashboardContext";
 import { links } from "../utils/links";
 
-export const NavLinks = () => {
+export const NavLinks = ({ isBigSidebar }: { isBigSidebar: boolean }) => {
   const { toggleSidebar } = useDashboardContext();
 
   return (
@@ -19,7 +19,7 @@ export const NavLinks = () => {
             // New react router adds active class to active page by default!
             end
             className="nav-link"
-            onClick={toggleSidebar}
+            onClick={isBigSidebar ? undefined : toggleSidebar}
           >
             <span className="icon">{icon}</span>
             {text}

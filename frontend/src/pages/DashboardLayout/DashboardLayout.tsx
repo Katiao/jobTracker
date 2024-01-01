@@ -11,7 +11,7 @@ type DashboardContextValues = {
   isDarkTheme: boolean;
   toggleDarkTheme: void;
   toggleSidebar: () => void;
-  logoutUser: void;
+  logoutUser: () => void;
 };
 
 // We explicitly allow `undefined` as a potential value here
@@ -32,7 +32,7 @@ export const DashboardLayout = () => {
 
   const toggleDarkTheme = console.log("toggle dark theme");
 
-  const logoutUser = console.log("Log out user");
+  const logoutUser = () => console.log("Log out user");
 
   return (
     <DashboardContext.Provider

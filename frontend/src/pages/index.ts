@@ -7,4 +7,5 @@ export { Error } from "./Error";
 export { Landing } from "./Landing";
 export { Register } from "./Register";
 export { Login } from "./Login";
+export { Admin } from "./Admin";
 export { DashboardLayout } from "./DashboardLayout/DashboardLayout";

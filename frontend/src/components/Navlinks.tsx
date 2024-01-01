@@ -1,21 +1,25 @@
 import { NavLink } from "react-router-dom";
+
+import { useDashboardContext } from "../pages/DashboardLayout/useDashboardContext";
 import { links } from "../utils/links";
 
-export const NavLinks = ({ toggleSidebar }: { toggleSidebar?: () => void }) => {
+export const NavLinks = () => {
+  const { toggleSidebar } = useDashboardContext();
+
   return (
     <div className="nav-links">
       {links.map((link) => {
-        const { text, path, id, icon } = link;
+        const { text, path, icon } = link;
 
         return (
           <NavLink
             to={path}
+            key={text}
+            // Added so that active class is not added to index path (addJob)
+            // New react router adds active class to active page by default!
             end
-            key={id}
+            className="nav-link"
             onClick={toggleSidebar}
-            className={({ isActive }) =>
-              isActive ? "nav-link active" : "nav-link"
-            }
           >
             <span className="icon">{icon}</span>
             {text}
